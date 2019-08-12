@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: redis
+  name: redis-master
+spec:
+  selector:
+    matchLabels:
+      app: redis
+      role: master
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: redis
+        role: master
+        tier: backend
+    spec:
+      containers:
+        - name: redis1
+          image: yim0823/redis-cluster
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          ports:
+            - containerPort: 6379
+          volumeMounts:
+            - mountPath: /redis-master-data
+              name: data
+          env:
+            - name: CLIENTHOST
+              value: 172.31.31.38
+            - name: CLIENTPORT
+              value: "6379"
+            - name: MASTERHOST
+            - name: MASTERPORT
+            - name: REQUIREPASS
+              value: password1234
+      volumes:
+        - name: data
+          emptyDir: {}
+      restartPolicy: Always

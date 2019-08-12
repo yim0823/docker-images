@@ -1,0 +1,33 @@
+cluster:
+  enabled: true
+  slaveCount: 3
+
+usePassword: false
+
+##
+## Redis Master parameters
+##
+master:
+  resources:
+    requests:
+      memory: 4Gi
+      cpu: 100m
+    limits:
+      memory: 6Gi
+
+  persistence:
+    enabled: false
+
+##
+## Redis Slave properties
+##
+slave:
+  resources:
+    requests:
+      memory: 4Gi
+      cpu: 100m
+    limits:
+      memory: 6Gi
+
+  persistence:
+    enabled: false

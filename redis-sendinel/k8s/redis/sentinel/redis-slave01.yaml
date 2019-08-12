@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-slave01
+  labels:
+    app: redis-sentinel
+    redis-sentinel: "true"
+    role: slave
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-sentinel
+      role: slave
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: redis-sentinel
+        role: slave
+        tier: backend
+    spec:
+      containers:
+        - name: slave
+          image: gcr.io/google_samples/gb-redisslave:v3
+          env:
+          - name: GET_HOSTS_FROM
+            value: dns
+          ports:
+          - containerPort: 6379
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              cpu: 100m
+              memory: 1Gi
+          volumeMounts:
+          - mountPath: /redis-data
+            name: data
+        - name: sentinel
+          image: k8s.gcr.io/redis:v1
+          env:
+          - name: SENTINEL
+            value: "true"
+          ports:
+          - containerPort: 26379
+      volumes:
+      - name: data
+        emptyDir: {}

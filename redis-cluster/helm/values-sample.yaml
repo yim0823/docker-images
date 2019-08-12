@@ -1,0 +1,181 @@
+image:
+  registry: docker.io
+  repository: bitnami/redis
+  tag: 5.0.5-debian-9-r36
+  pullPolicy: IfNotPresent
+
+## Cluster settings
+cluster:
+  enabled: true
+  slaveCount: 3
+
+## Specifies the Kubernetes Cluster's Domain Name.
+clusterDomain: cluster.local
+
+networkPolicy:
+  enabled: true
+
+serviceAccount:
+  ## Specifies whether a ServiceAccount should be created
+  create: false
+  ## The name of the ServiceAccount to use.
+  ## If not set and create is true, a name is generated using the fullname template
+  name:
+
+rbac:
+  ## Specifies whether RBAC resources should be created
+  create: false
+
+  role:
+    rules: []
+
+## Redis pod Security Context
+securityContext:
+  enabled: true
+  fsGroup: 1001
+  runAsUser: 1001
+
+## Use password authentication
+usePassword: false
+
+## Mount secrets as files instead of environment variables
+usePasswordFile: false
+
+## Persist data to a persistent volume (Redis Master)
+persistence: {}
+  ## A manually managed Persistent Volume and Claim
+  ## Requires persistence.enabled: true
+  ## If defined, PVC must be created manually before volume will be bound
+# existingClaim:
+
+# Redis port
+redisPort: 6379
+
+##
+## Redis Master parameters
+##
+master:
+  ## Redis command arguments
+  ##
+  ## Can be used to specify command line arguments, for example:
+  ##
+  command: "/run.sh"
+  configmap:
+  extraFlags: []
+  disableCommands:
+    - FLUSHDB
+    - FLUSHALL
+
+  podLabels: {}
+  podAnnotations: {}
+
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 5
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 1
+    successThreshold: 1
+    failureThreshold: 5
+
+  affinity: {}
+
+  ## Redis Master Service properties
+  service:
+    ##  Redis Master Service type
+    type: ClusterIP
+    port: 6379
+
+    annotations: {}
+    loadBalancerIP:
+
+  persistence:
+    enabled: false
+
+  statefulset:
+    updateStrategy: RollingUpdate
+
+##
+## Redis Slave properties
+## Note: service.type is a mandatory parameter
+## The rest of the parameters are either optional or, if undefined, will inherit those declared in Redis Master
+##
+slave:
+  ## Slave Service properties
+  service:
+    ## Redis Slave Service type
+    type: ClusterIP
+    ## Redis port
+    port: 6379
+    annotations: {}
+    loadBalancerIP:
+
+  ## Redis slave port
+  port: 6379
+  ## Can be used to specify command line arguments, for example:
+  ##
+  command: "/run.sh"
+  configmap:
+  ## Redis extra flags
+  extraFlags: []
+  ## List of Redis commands to disable
+  disableCommands:
+    - FLUSHDB
+    - FLUSHALL
+
+  affinity: {}
+
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 5
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 10
+    successThreshold: 1
+    failureThreshold: 5
+
+  ## Redis slave pod Annotation and Labels
+  podLabels: {}
+  podAnnotations: {}
+
+  persistence:
+    enabled: false
+
+  statefulset:
+    updateStrategy: RollingUpdate
+
+## Prometheus Exporter / Metrics
+metrics:
+  enabled: false
+
+##
+## Init containers parameters:
+## volumePermissions: Change the owner of the persist volume mountpoint to RunAsUser:fsGroup
+##
+volumePermissions:
+  enabled: false
+
+## Redis config file
+## ref: https://redis.io/topics/config
+##
+configmap: |-
+  # Enable AOF https://redis.io/topics/persistence#append-only-file
+  appendonly yes
+  # Disable RDB persistence, AOF persistence already enabled.
+  save ""
+## Sysctl InitContainer
+## used to perform sysctl operation to modify Kernel settings (needed sometimes to avoid warnings)
+sysctlImage:
+  enabled: false

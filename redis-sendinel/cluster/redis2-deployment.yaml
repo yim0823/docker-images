@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.18.0 (06a2e56)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: redis2
+  name: redis2
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: redis2
+    spec:
+      containers:
+        - env:
+            - name: CLIENTHOST
+              value: 172.31.31.38
+            - name: CLIENTPORT
+              value: "6380"
+            - name: MASTERHOST
+              value: 172.31.31.38
+            - name: MASTERPORT
+              value: "6379"
+            - name: REQUIREPASS
+              value: password1234
+          image: yim0823/redis-cluster
+          name: redis2
+          volumeMounts:
+            - name: data
+              mountPath: /home/redis/redis-data/redis1
+          resources: {}
+      volumes:
+        - name: data
+          emptyDir: {}
+      restartPolicy: Always
+status: {}

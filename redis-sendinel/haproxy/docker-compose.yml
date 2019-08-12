@@ -1,0 +1,10 @@
+version: '3'
+services:
+
+  haproxy:
+    image: haproxy:1.8.4
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    network_mode: "host"
+    restart: always

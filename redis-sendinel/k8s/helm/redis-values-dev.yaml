@@ -1,0 +1,28 @@
+replicas: 4
+redis:
+  resources:
+    requests:
+      memory: 512Mi
+      cpu: 100m
+    limits:
+      memory: 512Mi
+
+sentinel:
+  resources:
+    requests:
+      memory: 200Mi
+      cpu: 100m
+    limits:
+      memory: 200Mi
+
+hardAntiAffinity: false
+
+persistentVolume:
+  enabled: true
+  storageClass: "rbd"
+  accessModes:
+    - ReadWriteOnce
+  size: 512Mi
+  annotations: {}
+init:
+  resources: {}

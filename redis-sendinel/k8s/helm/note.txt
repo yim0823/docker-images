@@ -1,0 +1,1 @@
+helm install stable/redis-ha -f redis-values.yaml --name redis-ha
