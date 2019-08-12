@@ -18,6 +18,9 @@ master:
   persistence:
     enabled: false
 
+  statefulset:
+    updateStrategy: RollingUpdate
+
 ##
 ## Redis Slave properties
 ##
@@ -31,3 +34,6 @@ slave:
 
   persistence:
     enabled: false
+
+  statefulset:
+    updateStrategy: RollingUpdate
