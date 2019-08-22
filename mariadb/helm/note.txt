@@ -1,0 +1,1 @@
+helm install stable/mariadb -f mariadb-values-sample.yaml --name mariadb --namespace dcos

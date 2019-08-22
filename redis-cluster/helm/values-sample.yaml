@@ -1,7 +1,7 @@
 ## Cluster settings
 cluster:
   enabled: true
-  slaveCount: 3
+  slaveCount: 1
 
 ## Use password authentication
 usePassword: false

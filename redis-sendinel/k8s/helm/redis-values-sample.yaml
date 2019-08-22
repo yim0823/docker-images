@@ -19,11 +19,7 @@ sentinel:
 hardAntiAffinity: false
 
 persistentVolume:
-  enabled: true
-  storageClass: "rbd"
-  accessModes:
-    - ReadWriteOnce
-  size: 512Mi
-  annotations: {}
+  enabled: false
+
 init:
   resources: {}

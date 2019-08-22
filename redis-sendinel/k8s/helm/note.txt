@@ -1,1 +1,5 @@
+[Create a namespace]
+kubectl create namespace redis-ha
+
+[Run redis-ha]
 helm install stable/redis-ha -f redis-values.yaml --name redis-ha
