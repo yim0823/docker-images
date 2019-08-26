@@ -13,7 +13,7 @@ replication:
 
 master:
   persistence:
-    enabled: true
+    enabled: false
     accessModes:
       - ReadWriteOnce
     size: 4Gi
