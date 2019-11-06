@@ -23,7 +23,7 @@ slave:
   updateStrategy:
     type: RollingUpdate
   persistence:
-    enabled: true
+    enabled: false
     accessModes:
       - ReadWriteOnce
     size: 4Gi

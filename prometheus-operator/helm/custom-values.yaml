@@ -1,0 +1,46 @@
+nameOverride: "prometheus"
+fullnameOverride: "prometheus"
+alertmanager:
+  alertmanagerSpec:
+    resources:
+      requests:
+        memory: 400Mi
+        cpu: 100m
+      limits:
+        memory: 1Gi
+        cpu: 1
+    securityContext: {}
+grafana:
+  enabled: true
+  image:
+  securityContext:
+    fsGroup: null
+    runAsUser: null
+kube-state-metrics:
+  securityContext:
+    fsGroup: null
+    runAsUser: null
+prometheusOperator:
+  enabled: true
+  createCustomResource: true
+  resources:
+    limits:
+      cpu: 200m
+      memory: 200Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+prometheus:
+  enabled: true
+  prometheusSpec:
+    resources:
+      requests:
+        memory: 2Gi
+        cpu: 1
+      limits:
+        memory: 4Gi
+        cpu: 2
+    securityContext:
+      fsGroup: 2000
+      runAsNonRoot: true
+      runAsUser: 1000
